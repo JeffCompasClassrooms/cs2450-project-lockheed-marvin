@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>User Profile</h2>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter your username" />
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Bio</label>
+            <textarea id="bio" placeholder="Enter Bio Here"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="text" id="age" placeholder="Enter your age" />
+        </div>
+
+        <button onclick="saveChanges()">Save Changes</button>
+    </div>
+
+    <script>
+        function saveChanges() {
+            const username = document.getElementById('username').value;
+            const bio = document.getElementById('bio').value;
+            const age = document.getElementById('age').value;
+
+            // Log the values (In a real app, you could send these to a server or save to local storage)
+            console.log("Username: " + username);
+            console.log("Bio: " + bio);
+            console.log("Age: " + age);
+
+            // Clear the fields after saving (optional)
+            document.getElementById('username').value = '';
+            document.getElementById('bio').value = '';
+            document.getElementById('age').value = '';
+
+            // Optional: Alert the user that the changes have been saved
+            alert("Changes saved successfully!");
+        }
+    </script>
+</body>
+
+</html>
