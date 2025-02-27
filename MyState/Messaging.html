@@ -30,7 +30,6 @@
             padding: 10px;
             border-bottom: 1px solid #ddd;
             margin-bottom: 10px;
-            position: relative;
         }
         .profile-pic {
             width: 40px;
@@ -47,34 +46,48 @@
             color: #007bff;
             font-size: 14px;
         }
-        .menu-button {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
+        .messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 350px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth;
         }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 10px;
-            top: 50px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            padding: 5px;
+        .message {
+            background: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 18px;
+            margin: 5px 0;
+            max-width: 70%;
+            align-self: flex-end;
+            margin-left: auto;
         }
-        .dropdown-menu button {
-            display: block;
-            width: 100%;
-            border: none;
-            background: none;
+        .input-container {
+            display: flex;
+        }
+        input {
+            flex: 1;
             padding: 10px;
-            cursor: pointer;
-            text-align: left;
+            border: 1px solid #ccc;
+            border-radius: 18px;
+            outline: none;
         }
-        .dropdown-menu button:hover {
-            background: #f0f0f0;
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
         }
     </style>
 </head>
@@ -87,12 +100,6 @@
             <a href="#" class="profile-link">
                 <span class="profile-name">John Doe</span>
             </a>
-            <button class="menu-button" onclick="toggleMenu()">☰</button>
-            <div class="dropdown-menu" id="dropdownMenu">
-                <button>Option 1</button>
-                <button>Option 2</button>
-                <button>Option 3</button>
-            </div>
         </div>
         <div class="messages" id="messages"></div>
         <div class="input-container">
@@ -121,19 +128,6 @@
                 sendMessage();
             }
         }
-
-        function toggleMenu() {
-            var menu = document.getElementById("dropdownMenu");
-            menu.style.display = (menu.style.display === "block") ? "none" : "block";
-        }
-
-        document.addEventListener("click", function(event) {
-            var menu = document.getElementById("dropdownMenu");
-            var button = document.querySelector(".menu-button");
-            if (!button.contains(event.target) && !menu.contains(event.target)) {
-                menu.style.display = "none";
-            }
-        });
     </script>
 </body>
 </html>
