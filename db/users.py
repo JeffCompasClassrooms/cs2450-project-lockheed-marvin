@@ -11,7 +11,7 @@ and favorites.
 #returns the new user. Otherwise, returns None.
 #Viewability-list is a list of users whos subusers can view this user.
 #View-permissions-list is a list of users who this user's secondary users can view
-def new_user(db, username, password):
+def new_user(db, username, password, associated_user):
     users = db.table('users')
     User = tinydb.Query()
     if users.get(User.username == username):
@@ -19,6 +19,7 @@ def new_user(db, username, password):
     user_record = {
             'username': username,
             'password': password,
+            "country": associated_user,
             'profile_pic_url': "static/assets/default_user.jpg",
             'background-color': "#000000",
             'foreground-color': "#FFFFFF",
@@ -27,7 +28,8 @@ def new_user(db, username, password):
             'viewability-list': [],
             'view-permissions-list': [],
             'friends': [],
-            'favorites': []
+            'favorites': [],
+            'associated-user': associated_user
             }
     return users.insert(user_record)
 
@@ -38,6 +40,11 @@ def get_user(db, username, password):
     User = tinydb.Query()
     return users.get((User.username == username) &
             (User.password == password))
+
+def get_user_by_cc(db, country):
+    users = db.table('users')
+    User = tinydb.Query()
+    return users.get(User.country == country)
 
 #Returns a user given just a user name. Used to display profiles.
 def get_user_by_name(db, username):
