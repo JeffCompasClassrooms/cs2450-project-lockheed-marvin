@@ -39,27 +39,27 @@ def login():
     password = flask.request.form.get('password')
 
     resp = flask.make_response(flask.redirect(flask.url_for('login.index')))
-    if username == login and password == login:
-        resp = flask.make_response(flask.redirect(flask.url_for('login.logout')))
+    #if username == login and password == login:
+    #    resp = flask.make_response(flask.redirect(flask.url_for('login.logout')))
     resp.set_cookie('username', username)
     resp.set_cookie('password', password)
 
     submit = flask.request.form.get('type')
     if submit == 'Create':
         # Check if the user exists in the secondary_users table, since only secondary users can create an account
-        if users.new_user(db, username, password, users.get_user_by_cc(db, country_codes[random.randrange(0, len(country_codes))])) is None:
+        if users.new_user(db, username, password, users.get_user_by_cc(db, country_codes[random.randrange(0, len(country_codes))])['country']) is None:
             flask.flash('Username {} already taken!'.format(username), 'danger')
             return flask.redirect(flask.url_for('login.loginscreen'))
         flask.flash('User {} created successfully!'.format(username), 'success')
 
     elif submit == 'Login':
         user = users.get_user(db, username, password)
-
         if user:
             flask.flash(f'Welcome back, {username}!', 'success')
-            return flask.redirect(flask.url_for('login.index'))
+            #return flask.redirect(flask.url_for('login.loginscreen'))
         else:
             flask.flash('Invalid username or password. Please try again.', 'danger')
+            return flask.redirect(flask.url_for('login.loginscreen'))
 
     return resp
 
@@ -82,15 +82,11 @@ def index():
     username = flask.request.cookies.get('username')
     password = flask.request.cookies.get('password')
 
-    flask.flash("Username is: {}".format(username), 'danger')
-    flask.flash("Password is: {}".format(password), 'danger')
-
     if username is None or password is None:
         return flask.redirect(flask.url_for('login.loginscreen'))
 
 
     user = users.get_user(db, username, password)
-    flask.flash("User {} found!".format(user), 'success')
     if not user:
         flask.flash('Invalid credentials. Please try again.', 'danger')
         return flask.redirect(flask.url_for('login.loginscreen'))
