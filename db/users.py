@@ -19,7 +19,7 @@ def new_user(db, username, password, associated_user):
     user_record = {
             'username': username,
             'password': password,
-            "country": associated_user,
+            'country': associated_user,
             'profile_pic_url': "static/assets/default_user.jpg",
             'background-color': "#000000",
             'foreground-color': "#FFFFFF",
