@@ -118,7 +118,7 @@ try:
     driver = webdriver.Chrome(service=service)
     run_tests(driver)
 
-except ValueError:
+except:
     print("Invalid path! This script is running on GitHub.")
     options = Options()
     options.add_argument("--headless")
