@@ -110,22 +110,31 @@ def run_tests(driver):
         print(str(10-passed) + " TESTS FAILED!")
     driver.quit()
 
+print("Invalid path! This script is running on GitHub.")
+options = Options()
+options.add_argument("--headless")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
 
-#See if we're running locally or remotely.
-try:
-    # Specify the path to ChromeDriver
-    chrome_driver_path = "/usr/local/bin/chromedriver" #you'll need to put the path to YOUR chromedriver here
-    service = Service(executable_path=chrome_driver_path)
-    driver = webdriver.Chrome(service=service)
-    run_tests(driver)
+# Don't specify chromedriver path!
+driver = webdriver.Chrome(options=options)
+run_tests(driver)
 
-except:
-    print("Invalid path! This script is running on GitHub.")
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
+# #See if we're running locally or remotely.
+# try:
+#     # Specify the path to ChromeDriver
+#     chrome_driver_path = "/usr/local/bin/chromedriver" #you'll need to put the path to YOUR chromedriver here
+#     service = Service(executable_path=chrome_driver_path)
+#     driver = webdriver.Chrome(service=service)
+#     run_tests(driver)
+
+# except:
+#     print("Invalid path! This script is running on GitHub.")
+#     options = Options()
+#     options.add_argument("--headless")
+#     options.add_argument("--no-sandbox")
+#     options.add_argument("--disable-dev-shm-usage")
     
-    # Don't specify chromedriver path!
-    driver = webdriver.Chrome(options=options)
-    run_tests(driver)
+#     # Don't specify chromedriver path!
+#     driver = webdriver.Chrome(options=options)
+#     run_tests(driver)
