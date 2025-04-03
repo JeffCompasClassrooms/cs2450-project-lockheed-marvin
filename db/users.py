@@ -5,7 +5,7 @@ This is a user. A user is their username, password, profile picture, background-
 foreground color(color of the boxes containing text, videos, etc.), text-color, flag-image-url, friends, viewability,
 and favorites.
 '''
-
+ 
 
 #Creates a new user with username, password, and default attributes. If username != any other username,
 #returns the new user. Otherwise, returns None.

@@ -14,6 +14,13 @@
         <form method="post" action="/post">
           <div class="form-group">
             <textarea class="form-control" name="post" rows="3" placeholder="What's on your mind?"></textarea>
+            <!-- File input for image -->
+            <label for="picture">Choose an image:</label>
+            <input type="file" id="picture" name="picture_url" accept="image/*">
+            <br>
+            <!-- File input for video -->
+            <label for="video">Choose a video:</label>
+            <input type="file" id="video" name="video_url" accept="video/*">
           </div>
           <button type="submit" class="btn btn-primary" name="post-submit">Submit</button>
         </form>
