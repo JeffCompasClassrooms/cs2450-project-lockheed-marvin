@@ -12,7 +12,7 @@ chrome_options.add_argument("--headless")  # good for CI
 
 # Connect to Selenium running in Docker container
 driver = webdriver.Remote(
-    command_executor="http://localhost:5000/wd/hub",
+    command_executor="http://localhost:4444/wd/hub",
     options=chrome_options
 )
 
