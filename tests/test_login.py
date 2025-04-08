@@ -108,6 +108,7 @@ def run_tests(driver):
         print("ALL TESTS PASSED!")
     else:
         print(str(10-passed) + " TESTS FAILED!")
+        driver.get_log('browser')
     driver.quit()
 
 #See if we're running locally or remotely.
