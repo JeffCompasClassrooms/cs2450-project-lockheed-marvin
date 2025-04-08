@@ -5,6 +5,10 @@ on:
   push: 
      branches:
        - Averie 
+      
+  pull_request:
+    branches:
+     - Averie
 
 jobs:
   selenium:
@@ -14,7 +18,7 @@ jobs:
       selenium:
         image: selenium/standalone-chrome:latest
         ports:
-          - 4444:4444
+          - 5000:5000
 
     steps:
       - name: Checkout repo
@@ -37,8 +41,8 @@ jobs:
 
       - name: Run Selenium tests
         env:
-          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+          SELENIUM_REMOTE_URL: http://localhost:50000/wd/hub
         run: 
-          python settingstest2.py
+          python tests/settingstest2.py
 
           
