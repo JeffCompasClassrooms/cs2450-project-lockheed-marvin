@@ -19,7 +19,7 @@ driver = webdriver.Remote(
 wait = WebDriverWait(driver, 5)
 
 # 🔁 Update this URL to match the Flask app’s route that serves your HTML
-url = "http://localhost:5000/settings"
+url = "http://localhost:4444/settings"
 
 start_time = time.time()
 driver.get(url)
