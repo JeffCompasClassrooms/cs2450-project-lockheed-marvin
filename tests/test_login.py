@@ -108,6 +108,7 @@ def run_tests(driver):
         print("ALL TESTS PASSED!")
     else:
         print(str(10-passed) + " TESTS FAILED!")
+        print(driver.get_log('browser'))
     driver.quit()
 
 #See if we're running locally or remotely.
@@ -126,5 +127,5 @@ except:
     options.add_argument("--disable-dev-shm-usage")
     
     # Don't specify chromedriver path!
-    driver = webdriver.Chrome(options=options)
+    #driver = webdriver.Chrome(options=options)
     run_tests(driver)
