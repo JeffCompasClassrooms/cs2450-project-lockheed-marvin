@@ -1,4 +1,4 @@
-name: Run Selenium Tests
+name: Run Rylynns Tests
 
 on:
   push:
