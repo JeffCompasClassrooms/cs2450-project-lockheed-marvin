@@ -127,5 +127,5 @@ except:
     options.add_argument("--disable-dev-shm-usage")
     
     # Don't specify chromedriver path!
-    driver = webdriver.Chrome(options=options)
+    #driver = webdriver.Chrome(options=options)
     run_tests(driver)
