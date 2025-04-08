@@ -12,14 +12,14 @@ chrome_options.add_argument("--headless")  # good for CI
 
 # Connect to Selenium running in Docker container
 driver = webdriver.Remote(
-    command_executor="http://localhost:4444/wd/hub",
+    command_executor="http://localhost:5000/wd/hub",
     options=chrome_options
 )
 
 wait = WebDriverWait(driver, 5)
 
 # 🔁 Update this URL to match the Flask app’s route that serves your HTML
-url = "http://localhost:4444/settings"
+url = "http://localhost:5000/settings"
 
 start_time = time.time()
 driver.get(url)
