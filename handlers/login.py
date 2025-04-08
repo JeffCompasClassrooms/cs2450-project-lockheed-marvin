@@ -1,7 +1,6 @@
 import flask
 import random
 from flask import request
-import ipinfo
 from handlers import copy
 from db import posts, users, helpers
 
