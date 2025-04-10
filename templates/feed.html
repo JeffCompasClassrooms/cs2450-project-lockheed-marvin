@@ -11,16 +11,16 @@
     <div class="card bg-light mb-3">
       <div class="card-body">
         <h3 class="card-title">New Post</h3>
-        <form method="post" action="/post">
+        <form method="post" action="/post"  enctype="multipart/form-data">
           <div class="form-group">
             <textarea class="form-control" name="post" rows="3" placeholder="What's on your mind?"></textarea>
             <!-- File input for image -->
             <label for="picture">Choose an image:</label>
-            <input type="file" id="picture" name="picture_url" accept="image/*">
+            <input type="file" id="picture" name="picture" accept="image/*">
             <br>
             <!-- File input for video -->
             <label for="video">Choose a video:</label>
-            <input type="file" id="video" name="video_url" accept="video/*">
+            <input type="file" id="video" name="video" accept="video/*">
           </div>
           <button type="submit" class="btn btn-primary" name="post-submit">Submit</button>
         </form>

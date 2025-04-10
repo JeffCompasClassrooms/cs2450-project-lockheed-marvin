@@ -13,7 +13,7 @@ system. The first post will be 1, second will be 2, etc.
 #Takes in picture_url (if any).
 #Takes in a video_url (if any)
 #Returns the post
-def add_post(db, user, post_id, text, picture_url, video_url):
+def add_post(db, user, text, picture_url, video_url):
     posts = db.table('posts')
     post_input = {
             'user': user['username'],
