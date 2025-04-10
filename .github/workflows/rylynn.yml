@@ -1,4 +1,4 @@
-name: Run Selenium Tests
+name: Run Rylynns Tests
 
 on:
   push:
@@ -39,6 +39,6 @@ jobs:
 
       - name: Run Selenium tests
         env:
-          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+          SELENIUM_REMOTE_URL: http://localhost:5000/wd/hub
         run: |
           python tests/test_login.py

@@ -1,12 +1,12 @@
 name: Run Selenium Tests
 
-on:
+on: 
   push:
     branches:
-      - main
+      - Doug-LC
   pull_request:
     branches:
-      - main
+      - Doug-LC
 
 jobs:
   selenium:
@@ -39,6 +39,6 @@ jobs:
 
       - name: Run Selenium tests
         env:
-          SELENIUM_REMOTE_URL: http://localhost:5000/wd/hub
+          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
         run: |
-          python tests/all_tests.py
+          python tests/test_login.py
