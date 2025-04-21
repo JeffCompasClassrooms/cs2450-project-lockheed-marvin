@@ -17,10 +17,10 @@ def add_post(db, user, text, picture_url, video_url):
     posts = db.table('posts')
     post_input = {
             'user': user['username'],
-            'post-id': len(posts)+1, #Post id is simply the number post it is in the system.
+            'post_id': len(posts)+1, #Post id is simply the number post it is in the system.
             'text': text,
-            'picture-url': picture_url,
-            'video-url': video_url,
+            'picture_url': picture_url,
+            'video_url': video_url,
             'reactions': [],
             'comments': [],
             'time': time.time()
