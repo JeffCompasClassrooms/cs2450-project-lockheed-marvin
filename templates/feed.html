@@ -33,8 +33,16 @@
       <div class="card-body">
         <h4 class="card-title">{{ post.user }}</h4>
         <h6 class="time">{{ post.time|convert_time }}</h6>
-        <p class="card-text">{{ post.text }}</p>
-        <img class="card-pic" src="{{ posts.pictureurl }}" alt="User Generated Image">
+        {% if post.text %}
+           <p class="card-text">{{ post.text }}</p>
+         {% endif %}
+         {% if post.picture_url %}
+           <img class="card-pic" src="{{ post.picture_url }}">
+         {% endif %}
+         {% if post.video_url %}
+         <video controls width="250">
+           <source src="{{ post.video_url }}" type="video/mp4" />
+         {% endif %}
       </div>
     </div>
     {% endfor %}
