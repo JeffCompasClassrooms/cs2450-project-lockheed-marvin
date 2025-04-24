@@ -5,6 +5,9 @@ from selenium.webdriver.chrome.options import Options
 from tinydb import TinyDB, Query
 from tinydb.storages import JSONStorage
 from tinydb.middlewares import CachingMiddleware
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import time
 import os
 import json
@@ -57,11 +60,11 @@ def run_tests(driver):
 
         # Check for success
         if "Welcome" in driver.page_source or "Dashboard" in driver.title:
-            print("✅ Login Test Passed")
+            print("[PASSED] Login Test Passed")
             passed += 1
 
         else:
-            print("⚠️ Login failed, trying to create account...")
+            print("Login failed, trying to create account...")
 
             # Go back to login screen (if necessary)
             driver.get("http://localhost:5000/loginscreen")
@@ -80,7 +83,7 @@ def run_tests(driver):
             time.sleep(2)
 
             if "Welcome" in driver.page_source or "Dashboard" in driver.title:
-                print("✅ Account created and login successful")
+                print("[PASSED] Account created and login successful")
                 passed += 1
             else:
                 print("❌ Failed to create account")
@@ -114,7 +117,7 @@ def run_tests(driver):
         print("[FAILED] - Log Out button not found.")
         
     try:
-        feed_text = driver.find_element(By.CSS_SELECTOR, 'textarea[name="post"][placeholder="What is on your mind?"]')
+        feed_text = driver.find_element(By.XPATH, "//textarea[@name='post' and @placeholder=\"What's on your mind?\"]")
         print("[PASSED] - User has a textarea.")
         passed+=1
     except Exception as e:
@@ -122,7 +125,7 @@ def run_tests(driver):
         print("[FAILED] - User doesn't have a textarea.")
         
     try:
-        image_input = driver.find_element(By.CSS_SELECTOR, "input[type='file'][name='picture_url']")
+        image_input = driver.find_element(By.CSS_SELECTOR, "input[type='file'][name='picture']")
         print("[PASSED] - Image file exists.")
         passed+=1
     except Exception as e:
@@ -130,12 +133,12 @@ def run_tests(driver):
         print("[FAILED] - Image file not found.")
         
     try:
-        video_input = driver.find_element(By.CSS_SELECTOR, "input[type='file'][name='video_url']")
-        print("[PASSED] - Log Out button exists.")
+        video_input = driver.find_element(By.CSS_SELECTOR, "input[type='file'][name='video']")
+        print("[PASSED] - Video button exists.")
         passed+=1
     except Exception as e:
         print("Error:", e)
-        print("[FAILED] - Log Out button not found.")
+        print("[FAILED] - Video button not found.")
 
     try:
         friend_search = driver.find_element(By.CSS_SELECTOR, "input[type='text'][placeholder='username']")
@@ -146,36 +149,32 @@ def run_tests(driver):
         print("[FAILED] - You have no way of looking up friends")
 
     print("--= Starting Logout Test =--")
+
+
     try:
-        # Wait for the logout element to be clickable/visible
-        time.sleep(2)
+        # Wait for the "menu" button to be clickable and click it to open the dropdown
+        menu_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.navbar-toggler"))
+        )
+        menu_button.click()  # Click the menu button to open the dropdown
 
-        # Try to find a logout button (by text or attribute)
-        try:
-            # Case 1: If it's a button
-            logout_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Logout')]")
-            logout_button.click()
-        except:
-            try:
-                # Case 2: If it's a link
-                logout_link = driver.find_element(By.XPATH, "//a[contains(text(), 'Logout')]")
-                logout_link.click()
-            except:
-                print("❌ Could not find logout button or link.")
-                return
+        # Now, wait for the logout button inside the dropdown to be clickable
+        logout_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//form[@method='post'][@action='/logout']//button[@name='logout']"))
+        )
+        
+        # Click the logout button
+        logout_button.click()
+        print("[PASSED] - Successfully logged out!")
+        passed += 1
 
-        time.sleep(2)
-
-        # Check if logout was successful (back at login screen or similar)
-        if "login" in driver.current_url.lower() or "log in" in driver.page_source.lower():
-            passed+=1
-            print("✅ Logout Test Passed")
-        else:
-            print("❌ Logout may have failed. Still logged in or unexpected page.")
-
+    except TimeoutException:
+        print("❌ Timeout: Could not find the logout button within the given time.")
+        print(driver.page_source)  # Print the page source to see the current HTML content
+    except NoSuchElementException:
+        print("❌ Could not find the logout button.")
     except Exception as e:
-        print(f"❌ Exception during logout test: {e}")
-
+        print(f"❌ An error occurred: {e}")
 
     try:
         db_path = os.path.join(os.path.dirname(__file__), '..', 'db.json')
@@ -194,7 +193,7 @@ def run_tests(driver):
 
         if to_delete_key:
             del users[to_delete_key]
-            print(f"🗑️ Deleted user {to_delete_key} from users table.")
+            print(f"[PASSED] - Deleted user {to_delete_key} from users table.")
 
             # Save changes back with pretty print
             with open(db_path, 'w', encoding='utf-8') as f:
