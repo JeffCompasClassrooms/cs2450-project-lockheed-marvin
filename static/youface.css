@@ -57,6 +57,11 @@ h2{
     color: white;
 }
 
+.card-pic{
+    width: 150px;
+    height: auto;
+}
+
 
 button{
     background-color: #0E1079;
