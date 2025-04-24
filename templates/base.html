@@ -10,23 +10,26 @@
     </head>
 
     <body>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <nav class="navbar">
         <div class="container">
           <a class="navbar-brand" href="/">{{ title }}</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            Menu
           </button>
 
           <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#">Link 2</a>
+                <a class="nav-link" href="feed.html">Profile</a>
+                <a class="nav-link" href="base.html">Message</a>
+                <a class="nav-link" href="friend.html">Friends</a>
+                <a class="nav-link" href="settings.htm">Settings</a>
               </li>
             </ul>
             <ul class="navbar-nav pull-right">
               {% if user %}
               <form method="post" action="/logout">
-                <button type="submit" class="form-control btn btn-secondary" name="logout">Logout</button>
+                <button type="submit" class="logout" name="logout">Logout</button>
               </form>
               {% endif %}
             </ul>
@@ -36,7 +39,6 @@
 
       <div class="jumbotron">
         <div class="container">
-          <h1><a href="/">{{title}}</a></h1>
           <p class="lead">{{subtitle}}</p>
         </div>
       </div>
@@ -45,7 +47,7 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-            <div class="alert alert-dismissible alert-{{ category }} fade show" role="alert">
+            <div class="alert" role="alert">
                 {{ message }}
                 <button type="button" class="close" data-dismiss="alert">
                   <span aria-hidden="true">&times;</span>

@@ -8,51 +8,60 @@
 <div class="row justify-content-md-center">
 
   <div class="col col-lg-8">
-    <div class="card bg-light mb-3">
+    <div class="feed2">
       <div class="card-body">
         <h3 class="card-title">New Post</h3>
-        <form method="post" action="/post">
+        <form method="post" action="/post"  enctype="multipart/form-data">
           <div class="form-group">
             <textarea class="form-control" name="post" rows="3" placeholder="What's on your mind?"></textarea>
             <!-- File input for image -->
             <label for="picture">Choose an image:</label>
-            <input type="file" id="picture" name="picture_url" accept="image/*">
+            <input type="file" id="picture" name="picture" accept="image/*">
             <br>
             <!-- File input for video -->
             <label for="video">Choose a video:</label>
-            <input type="file" id="video" name="video_url" accept="video/*">
+            <input type="file" id="video" name="video" accept="video/*">
           </div>
-          <button type="submit" class="btn btn-primary" name="post-submit">Submit</button>
+          <button type="submit" class="button3" name="post-submit">Submit</button>
         </form>
       </div>
     </div>
 
     <h2 class="">My Feed</h2>
     {% for post in posts %}
-    <div class="card bg-light">
+    <div class="feed">
       <div class="card-body">
         <h4 class="card-title">{{ post.user }}</h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{ post.time|convert_time }}</h6>
-        <p class="card-text">{{ post.text }}</p>
+        <h6 class="time">{{ post.time|convert_time }}</h6>
+        {% if post.text %}
+           <p class="card-text">{{ post.text }}</p>
+         {% endif %}
+         {% if post.picture_url %}
+           <img class="card-pic" src="{{ post.picture_url }}">
+         {% endif %}
+         {% if post.video_url %}
+         <video controls width="250">
+           <source src="{{ post.video_url }}" type="video/mp4" />
+         {% endif %}
       </div>
     </div>
     {% endfor %}
   </div>
 
   <div class="col col-lg-3">
-    <div class="card bg-light mb-3">
+    <div class="feed2">
       <div class="card-body">
         <h3 class="card-title">Add Friend</h3>
         <form method="post" action="/addfriend">
           <div class="form-group mb-1">
             <input type="text" class="form-control" name="name" placeholder="username" />
           </div>
-          <button type="submit" class="form-control btn btn-primary" name="addfriend">Submit</button>
+          <button type="submit" class="button2" name="addfriend">Submit</button>
         </form>
       </div>
     </div>
 
-    <div class="card bg-light">
+    <div class="feed2">
       <div class="card-body">
         <h3 class="card-title">My Friends</h3>
         {% if friends %}

@@ -1,8 +1,18 @@
 import flask
+import os
 
 from db import posts, users, helpers
 
 blueprint = flask.Blueprint("posts", __name__)
+
+# Set the allowed extensions
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+#Function to make sure file is valid a valid type.
+def allowed_file(filename, is_video):
+    if is_video:
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'mp4'
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @blueprint.route('/post', methods=['POST'])
 def post():
@@ -17,46 +27,41 @@ def post():
         flask.flash('You need to be logged in to do that.', 'danger')
         return flask.redirect(flask.url_for('login.loginscreen'))
 
-    post_id = flask.request.form.get('post')
-    text = flask.request.form.get('text')  # Optional text content
-    picture_url = flask.request.form.get('picture_url')  # Optional picture URL
-    video_url = flask.request.form.get('video_url')  # Optional video URL
+    text = flask.request.form.get('post')  # Optional text content
+    picture_url = None
+    video_url = None
 
     # Validate content: Check if at least one of the fields has content (text, picture, or video)
-    if not text and not picture_url and not video_url:
+    if not text and 'picture' not in flask.request.files and 'video' not in flask.request.files:
         flask.flash('Please provide some content for your post (text, picture, or video).', 'danger')
-        return flask.redirect(flask.url_for('posts.post'))
+        return flask.redirect(flask.url_for('login.index'))
 
     # Logic to handle combinations of post content
-    if text and not picture_url and not video_url:
-        # Only text content
-        posts.add_post(db, user, post_id, text, None, None)
+    if not text:
+        text = None
 
-    elif not text and picture_url and not video_url:
-        # Only a picture
-        posts.add_post(db, user, post_id, None, picture_url, None)
+    if flask.request.files['picture'].filename:
+        file = flask.request.files['picture']
+        if not allowed_file(file.filename, False):
+            flask.flash('Please upload only a supported image format (png, jpg, jpeg, gif).', 'danger')
+            return flask.redirect(flask.url_for('login.index'))
+        filepath = os.path.join("static/assets/", file.filename)
+        file.save(filepath)
+        picture_url = filepath
+        print(f'File uploaded successfully to {filepath}')
 
-    elif not text and not picture_url and video_url:
+    if flask.request.files['video'].filename:
         # Only a video
-        posts.add_post(db, user, post_id, None, None, video_url)
+        file = flask.request.files['video']
+        if not allowed_file(file.filename, True):
+            flask.flash('Please upload only a supported image format (mp4).', 'danger')
+            return flask.redirect(flask.url_for('login.index'))
+        filepath = os.path.join("static/assets/", file.filename)
+        file.save(filepath)
+        video_url = filepath
+        print(f'File uploaded successfully to {filepath}') 
 
-    elif text and picture_url and not video_url:
-        # Text and picture
-        posts.add_post(db, user, post_id, text, picture_url, None)
-
-    elif text and not picture_url and video_url:
-        # Text and video
-        posts.add_post(db, user, post_id, text, None, video_url)
-
-    elif not text and picture_url and video_url:
-        # Picture and video
-        posts.add_post(db, user, post_id, None, picture_url, video_url)
-
-    elif text and picture_url and video_url:
-        # Text, picture, and video
-        posts.add_post(db, user, post_id, text, picture_url, video_url)
-
-    posts.add_post(db, user, post_id, text, picture_url, video_url)
+    posts.add_post(db, user,  text, picture_url, video_url)
     # Redirect to the posts page or wherever you want after posting
     flask.flash('Post created successfully!', 'success')
 
