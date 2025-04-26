@@ -1,9 +1,12 @@
 import flask
-
+import random
+from flask import request
 from handlers import copy
 from db import posts, users, helpers
 
 blueprint = flask.Blueprint("login", __name__)
+
+country_codes = ["US", "BO", "NL", "TM", "AU", "ZW", "KR", "CN", "RU", "CR", "MA", "GQ", "BR"]
 
 @blueprint.route('/loginscreen')
 def loginscreen():
@@ -20,8 +23,7 @@ def loginscreen():
             flask.flash('You are already logged in.', 'warning')
             return flask.redirect(flask.url_for('login.index'))
 
-    return flask.render_template('login.html', title=copy.title,
-            subtitle=copy.subtitle)
+    return flask.render_template('login.html', title=copy.title, subtitle=copy.subtitle)
 
 @blueprint.route('/login', methods=['POST'])
 def login():
@@ -36,22 +38,27 @@ def login():
     password = flask.request.form.get('password')
 
     resp = flask.make_response(flask.redirect(flask.url_for('login.index')))
+    #if username == login and password == login:
+    #    resp = flask.make_response(flask.redirect(flask.url_for('login.logout')))
     resp.set_cookie('username', username)
     resp.set_cookie('password', password)
 
     submit = flask.request.form.get('type')
     if submit == 'Create':
-        if users.new_user(db, username, password) is None:
-            resp.set_cookie('username', '', expires=0)
-            resp.set_cookie('password', '', expires=0)
+        # Check if the user exists in the secondary_users table, since only secondary users can create an account
+        if users.new_user(db, username, password, users.get_user_by_cc(db, country_codes[random.randrange(0, len(country_codes))])['country']) is None:
             flask.flash('Username {} already taken!'.format(username), 'danger')
             return flask.redirect(flask.url_for('login.loginscreen'))
         flask.flash('User {} created successfully!'.format(username), 'success')
-    elif submit == 'Delete':
-        if users.delete_user(db, username, password):
-            resp.set_cookie('username', '', expires=0)
-            resp.set_cookie('password', '', expires=0)
-            flask.flash('User {} deleted successfully!'.format(username), 'success')
+
+    elif submit == 'Login':
+        user = users.get_user(db, username, password)
+        if user:
+            flask.flash(f'Welcome back, {username}!', 'success')
+            #return flask.redirect(flask.url_for('login.loginscreen'))
+        else:
+            flask.flash('Invalid username or password. Please try again.', 'danger')
+            return flask.redirect(flask.url_for('login.loginscreen'))
 
     return resp
 
@@ -70,22 +77,26 @@ def index():
     """Serves the main feed page for the user."""
     db = helpers.load_db()
 
-    # make sure the user is logged in
+    # Make sure the user is logged in
     username = flask.request.cookies.get('username')
     password = flask.request.cookies.get('password')
-    if username is None and password is None:
+
+    if username is None or password is None:
         return flask.redirect(flask.url_for('login.loginscreen'))
+
+
     user = users.get_user(db, username, password)
     if not user:
         flask.flash('Invalid credentials. Please try again.', 'danger')
         return flask.redirect(flask.url_for('login.loginscreen'))
-
-    # get the info for the user's feed
+    
+    # Get the info for the user's feed
     friends = users.get_user_friends(db, user)
     all_posts = []
     for friend in friends + [user]:
         all_posts += posts.get_posts(db, friend)
-    # sort posts
+    
+    # Sort posts
     sorted_posts = sorted(all_posts, key=lambda post: post['time'], reverse=True)
 
     return flask.render_template('feed.html', title=copy.title,

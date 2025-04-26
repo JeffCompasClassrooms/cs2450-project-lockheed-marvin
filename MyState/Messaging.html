@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Social Media Messages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-container {
+            width: 400px;
+            height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .profile-name {
+            font-weight: bold;
+            flex-grow: 1;
+        }
+        .profile-link {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 14px;
+        }
+        .messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 350px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth;
+        }
+        .message {
+            background: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 18px;
+            margin: 5px 0;
+            max-width: 70%;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .input-container {
+            display: flex;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 18px;
+            outline: none;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <a href="#" class="profile-link">
+                <img src="profile-pic.jpg" alt="Profile Picture" class="profile-pic">
+            </a>
+            <a href="#" class="profile-link">
+                <span class="profile-name">John Doe</span>
+            </a>
+        </div>
+        <div class="messages" id="messages"></div>
+        <div class="input-container">
+            <input type="text" id="messageInput" placeholder="Type a message..." onkeydown="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            var input = document.getElementById("messageInput");
+            var messageText = input.value.trim();
+            if (messageText !== "") {
+                var messagesContainer = document.getElementById("messages");
+                var messageElement = document.createElement("div");
+                messageElement.classList.add("message");
+                messageElement.textContent = messageText;
+                messagesContainer.appendChild(messageElement);
+                input.value = "";
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>

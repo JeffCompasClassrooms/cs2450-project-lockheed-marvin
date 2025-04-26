@@ -1,5 +1,128 @@
+*{
+    
+    font-family: Arial;
+
+
+    p {
+
+    }
+
+}
+
+body{
+    background-color: #ADD8E6;
+}
+
+.logout{
+    color: white;
+    font-size: 13px;
+    margin-right: 550px;
+
+}
+
+.navbar{
+    color: #FFFFFF;
+    background-color: #0E1079;
+}
+
+.navbar-toggler{
+    background-color: #FFFFFF;
+    box-shadow: 5px 5px 5px black;
+    border-radius: 12px;
+    color: black;
+}
+
+.nav-link{
+    color: white;
+}
+
+
+.navbar-brand{
+    color: #FFFFFF;
+}
+
+h1{
+    color: black;
+}
+
+h2{
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.feed{
+    background-color: #0E1079;
+    border: thick double #ADD8E6;
+    color: white;
+}
+
+
+button{
+    background-color: #0E1079;
+    color: #FFFFFF;
+    border: none;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+button:hover{
+    color: black;
+}
+
+
+
+.button3{
+    background-color: #FFFFFF;
+    box-shadow: 5px 5px 5px black;
+    border-radius: 12px;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.button2{
+    background-color: #FFFFFF;
+    box-shadow: 5px 5px 5px black;
+    border-radius: 12px;
+    color: black;
+    padding: 10px 22px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+}
+
+
+.feed2{
+    background-color: #0E1079;
+    color: white;
+}
+
+.time{
+    color: white;
+}
+
+.alert{
+    background-color: #f6c944;
+}
+
+label{
+    padding-top: 10px;
+}
+
 .jumbotron {
+
+    background-color: #ADD8E6;
+
     padding: 0.5em 0.6em;
+
+    a{
+        color: white;
+    }
     h1 {
         font-size: 2em;
     }
@@ -8,5 +131,8 @@
         .btn {
             padding: 0.5em;
         }
+        color: white;
     }
+
+
 }
