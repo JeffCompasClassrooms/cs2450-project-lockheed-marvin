@@ -1,0 +1,37 @@
+name: Run My Selenium Test
+
+on:
+  push:
+    branches:
+      - Tanner
+
+jobs:
+  run-selenium:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install selenium
+        pip install flask
+        pip install webdriver-manager
+
+    - name: Start Flask app in background
+      run: |
+        export FLASK_APP=main.py  # Replace 'main.py' with your flask app file if needed
+        flask run --host=0.0.0.0 &
+        sleep 5
+
+    - name: Run Selenium Tests
+      run: |
+        python path/to/your_selenium_test.py  # <-- Adjust this path!
+
